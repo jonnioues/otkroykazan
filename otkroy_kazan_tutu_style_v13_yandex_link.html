@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Открой Казань — жильё в Татарстане</title>
+<style>
+:root{
+  --green:#0b7a4b;
+  --green2:#0e8b57;
+  --red:#d93636;
+  --ink:#17212b;
+  --muted:#6b7680;
+  --bg:#f6f7f8;
+  --line:#e5e8eb;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink)}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.wrap{max-width:1180px;margin:auto;padding:0 24px}
+
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.nav{height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-size:24px;font-weight:900;letter-spacing:-.7px}
+.brand .g{color:var(--green)} .brand .r{color:var(--red)}
+.brand small{display:block;font-size:10px;color:var(--muted);margin-top:4px;font-weight:650}
+.header-actions{display:flex;align-items:center;gap:10px}
+.fav-top{border:1px solid #dce3df;background:#fff;border-radius:11px;padding:9px 12px;font-size:13px;font-weight:750;cursor:pointer}
+.hamburger{width:42px;height:42px;border:1px solid #dce3df;background:#fff;border-radius:11px;display:grid;place-items:center;cursor:pointer}
+.hamburger span,.hamburger span:before,.hamburger span:after{content:"";display:block;width:18px;height:2px;background:#243129;border-radius:4px;position:relative}
+.hamburger span:before{position:absolute;top:-6px}
+.hamburger span:after{position:absolute;top:6px}
+.menu-wrap{position:relative}
+.menu{display:none;position:absolute;right:0;top:50px;width:235px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 45px rgba(20,40,30,.14);padding:8px;z-index:50}
+.menu.open{display:block}
+.menu button{width:100%;text-align:left;border:0;background:#fff;padding:11px 12px;border-radius:9px;cursor:pointer;font-size:14px}
+.menu button:hover{background:#f3f7f5}
+.menu .sep{height:1px;background:var(--line);margin:5px 0}
+
+.top{background:#fff;padding:32px 0 26px;border-bottom:1px solid var(--line)}
+h1{margin:0 0 20px;font-size:34px;letter-spacing:-1px}
+.searchbar{display:grid;grid-template-columns:1.25fr 1fr 1fr .9fr auto;gap:0;background:#fff;border:1px solid #dfe4e1;border-radius:15px;box-shadow:0 7px 22px rgba(20,40,30,.06);overflow:visible}
+.field{padding:10px 13px;border-right:1px solid var(--line);min-height:64px}
+.field label{display:block;color:#8a9490;font-size:11px;margin-bottom:3px}
+.field select,.field input{width:100%;border:0;outline:none;background:transparent;color:#17212b;font-weight:750;padding:2px 0}
+.searchbtn{border:0;background:var(--red);color:#fff;font-weight:900;padding:0 25px;font-size:14px;cursor:pointer}
+.searchbtn:hover{filter:brightness(.96)}
+.chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.chip{border:1px solid #dce3df;background:#fff;padding:9px 13px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer}
+.chip.active{background:#edf8f2;color:var(--green);border-color:#cce4d6}
+
+.content{padding:26px 0 50px}
+.layout{display:grid;grid-template-columns:250px 1fr;gap:24px}
+.sidebar{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;height:max-content;position:sticky;top:86px}
+.sidebar h3{font-size:16px;margin:0 0 15px}
+.group{padding:15px 0;border-top:1px solid var(--line)}
+.group:first-of-type{border-top:0;padding-top:0}
+.group b{font-size:13px;display:block;margin-bottom:9px}
+.check{display:flex;gap:8px;align-items:center;margin:8px 0;font-size:13px;color:#46515a}
+.check input{accent-color:var(--green)}
+.range{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.range input{width:100%;padding:9px;border:1px solid #d9dfdc;border-radius:10px}
+
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:14px}
+.found{font-size:14px;color:var(--muted)}
+.actions{display:flex;gap:10px}
+.action{border:1px solid #dce3df;background:#fff;border-radius:11px;padding:10px 13px;font-size:13px;font-weight:700;cursor:pointer}
+.action.map{color:var(--green)}
+
+.hotel{display:grid;grid-template-columns:245px 1fr 155px;background:#fff;border:1px solid var(--line);border-radius:17px;overflow:hidden;margin-bottom:14px;box-shadow:0 5px 18px rgba(20,40,30,.04);position:relative}
+.hotel.hidden{display:none}
+.photo{height:200px;position:relative;background:#ddd}
+.photo img{width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;top:11px;left:11px;background:rgba(255,255,255,.94);padding:6px 9px;border-radius:999px;font-size:11px;font-weight:800}
+.heart{position:absolute;top:11px;right:11px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.95);font-size:22px;line-height:1;color:#64706b;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.heart.active{color:var(--red)}
+.info{padding:17px 18px}
+.title{font-size:19px;font-weight:850;margin-bottom:6px}
+.rating{font-size:13px;color:#ef9b18;font-weight:800;margin-bottom:7px}
+.meta{font-size:13px;color:var(--muted);line-height:1.5}
+.features{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+.feature{font-size:11px;background:#f1f5f3;color:#51605a;border-radius:999px;padding:6px 8px}
+.book{padding:17px;border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;align-items:flex-end;text-align:right}
+.old{font-size:12px;color:#98a19d;text-decoration:line-through}
+.price{font-size:23px;font-weight:900;margin:3px 0}
+.night{font-size:11px;color:var(--muted);margin-bottom:14px}
+.partner{width:100%;border:0;background:var(--green);color:#fff;border-radius:11px;padding:11px 10px;font-weight:850;cursor:pointer}
+.partner:hover{background:var(--green2)}
+
+.empty{display:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center;color:var(--muted)}
+.empty.show{display:block}
+.note{background:#fff7e9;border:1px solid #f2dfb8;border-radius:13px;padding:13px 15px;font-size:12px;color:#6d5c37;margin-top:18px}
+footer{padding:28px 0;border-top:1px solid var(--line);background:#fff;color:var(--muted);font-size:12px}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .searchbar{grid-template-columns:1fr 1fr}
+  .searchbtn{min-height:52px;grid-column:1/-1}
+  .hotel{grid-template-columns:190px 1fr}
+  .book{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);align-items:stretch;text-align:left}
+}
+@media(max-width:620px){
+  .fav-top{display:none}
+  .searchbar{grid-template-columns:1fr}
+  .searchbtn{grid-column:auto}
+  .field{border-right:0;border-bottom:1px solid var(--line)}
+  .hotel{grid-template-columns:1fr}
+  .photo{height:210px}
+  .book{grid-column:auto}
+  h1{font-size:28px}
+}
+
+.guest-field{position:relative}
+.guest-button{width:100%;border:0;background:transparent;text-align:left;padding:2px 0;font-weight:750;color:#17212b;cursor:pointer}
+.guest-pop{display:none;position:absolute;z-index:40;top:62px;right:0;width:330px;background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 18px 45px rgba(20,40,30,.15);padding:16px}
+.guest-pop.open{display:block}
+.guest-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.guest-row:last-child{border-bottom:0}
+.guest-label b{display:block;font-size:14px}
+.guest-label span{font-size:11px;color:var(--muted)}
+.counter{display:flex;align-items:center;gap:10px}
+.counter button{width:32px;height:32px;border:1px solid #dce3df;background:#fff;border-radius:9px;font-size:18px;cursor:pointer}
+.counter strong{min-width:20px;text-align:center}
+.child-ages{padding-top:8px}
+.child-age{display:grid;grid-template-columns:1fr 115px;gap:10px;align-items:center;padding:7px 0}
+.child-age select{padding:8px;border:1px solid #d9dfdc;border-radius:9px;background:#fff}
+.guest-done{width:100%;margin-top:10px;border:0;background:var(--green);color:#fff;padding:10px;border-radius:10px;font-weight:850;cursor:pointer}
+.sort-select{border:1px solid #dce3df;background:#fff;border-radius:11px;padding:10px 34px 10px 12px;font-size:13px;font-weight:700;color:#17212b}
+.search-hint{font-size:11px;color:var(--muted);margin-top:8px}
+
+
+.searchbar .field:first-child{border-radius:15px 0 0 15px}
+.searchbar .searchbtn{border-radius:0 15px 15px 0}
+.guest-field{z-index:35;background:#fff}
+.guest-pop{z-index:100}
+@media(max-width:900px){
+  .searchbar .field:first-child{border-radius:15px 0 0 0}
+  .searchbar .searchbtn{border-radius:0 0 15px 15px}
+}
+@media(max-width:620px){
+  .searchbar .field:first-child{border-radius:15px 15px 0 0}
+  .guest-pop{left:0;right:auto;width:min(330px,calc(100vw - 48px))}
+}
+
+
+.city-field{position:relative;z-index:36;background:#fff}
+.city-button{
+  width:100%;border:0;background:transparent;text-align:left;padding:2px 0;
+  font-weight:750;color:#17212b;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px
+}
+.city-arrow{
+  width:8px;height:8px;border-right:2px solid #77827d;border-bottom:2px solid #77827d;
+  transform:rotate(45deg) translateY(-2px);transition:.2s;flex:0 0 auto
+}
+.city-field.open .city-arrow{transform:rotate(225deg) translate(-2px,-1px)}
+.city-pop{
+  display:none;position:absolute;z-index:110;top:62px;left:0;width:280px;background:#fff;
+  border:1px solid var(--line);border-radius:15px;box-shadow:0 18px 45px rgba(20,40,30,.15);padding:8px
+}
+.city-pop.open{display:block}
+.city-option{
+  width:100%;border:0;background:#fff;text-align:left;padding:11px 12px;border-radius:10px;
+  cursor:pointer;font-size:14px;color:#26322c;display:flex;align-items:center;justify-content:space-between
+}
+.city-option:hover{background:#f3f8f5}
+.city-option.selected{background:#edf8f2;color:var(--green);font-weight:800}
+.city-option.selected::after{content:"✓";font-weight:900}
+@media(max-width:620px){.city-pop{width:min(280px,calc(100vw - 48px))}}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#"><span class="g">Открой</span> <span class="r">Казань</span><small>Жильё в Татарстане</small></a>
+    <div class="header-actions">
+      <button class="fav-top" id="favTop" onclick="toggleFavorites()">♡ Избранное <span id="favCountTop">0</span></button>
+      <div class="menu-wrap">
+        <button class="hamburger" aria-label="Меню" onclick="toggleMenu()"><span></span></button>
+        <div class="menu" id="menu">
+          <button onclick="toggleFavorites();toggleMenu(false)">♡ Избранное <span id="favCountMenu">0</span></button>
+          <div class="sep"></div>
+          <button onclick="demoSection('Авиабилеты')">✈️ Авиабилеты</button>
+          <button onclick="demoSection('Ж/д билеты')">🚆 Ж/д билеты</button>
+          <button onclick="demoSection('Автобусы')">🚌 Автобусы</button>
+          <button onclick="demoSection('Электрички')">🚉 Электрички</button>
+          <button onclick="showAllHotels();toggleMenu(false)">🏨 Отели</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="top">
+  <div class="wrap">
+    <h1>Отели, квартиры и апартаменты в Татарстане</h1>
+    <div class="searchbar">
+      <div class="field city-field" id="cityField">
+        <label>Куда</label>
+        <button class="city-button" id="cityButton" type="button" onclick="toggleCityMenu()">
+          <span id="cityLabel">Казань</span><span class="city-arrow"></span>
+        </button>
+        <div class="city-pop" id="cityPop">
+          <button class="city-option selected" type="button" data-city="Казань" onclick="selectCity('Казань',this)">Казань</button>
+          <button class="city-option" type="button" data-city="Набережные Челны" onclick="selectCity('Набережные Челны',this)">Набережные Челны</button>
+          <button class="city-option" type="button" data-city="Елабуга" onclick="selectCity('Елабуга',this)">Елабуга</button>
+          <button class="city-option" type="button" data-city="Альметьевск" onclick="selectCity('Альметьевск',this)">Альметьевск</button>
+          <button class="city-option" type="button" data-city="Иннополис" onclick="selectCity('Иннополис',this)">Иннополис</button>
+          <button class="city-option" type="button" data-city="Болгар" onclick="selectCity('Болгар',this)">Болгар</button>
+          <button class="city-option" type="button" data-city="Свияжск" onclick="selectCity('Свияжск',this)">Свияжск</button>
+        </div>
+        <input type="hidden" id="city" value="Казань">
+      </div>
+      <div class="field">
+        <label for="checkin">Заезд</label>
+        <input type="date" id="checkin" min="2026-10-04" value="2026-10-12" onchange="syncDates()">
+      </div>
+      <div class="field">
+        <label for="checkout">Выезд</label>
+        <input type="date" id="checkout" min="2026-10-13" value="2026-10-15">
+      </div>
+      <div class="field guest-field" id="guestField">
+        <label>Гости</label>
+        <button class="guest-button" id="guestSummary" type="button" onclick="toggleGuests()">2 взрослых</button>
+        <div class="guest-pop" id="guestPop">
+          <div class="guest-row">
+            <div class="guest-label"><b>Взрослые</b><span>от 1 до 10</span></div>
+            <div class="counter">
+              <button type="button" onclick="changeAdults(-1)">−</button>
+              <strong id="adultCount">2</strong>
+              <button type="button" onclick="changeAdults(1)">+</button>
+            </div>
+          </div>
+          <div class="guest-row">
+            <div class="guest-label"><b>Дети</b><span>до 4 детей</span></div>
+            <div class="counter">
+              <button type="button" onclick="changeChildren(-1)">−</button>
+              <strong id="childCount">0</strong>
+              <button type="button" onclick="changeChildren(1)">+</button>
+            </div>
+          </div>
+          <div class="child-ages" id="childAges"></div>
+          <button class="guest-done" type="button" onclick="toggleGuests(false)">Готово</button>
+        </div>
+      </div>
+      <button class="searchbtn" onclick="runSearch()">Найти</button>
+    </div>
+    <div class="search-hint">Параметры поиска подготовлены под Яндекс Путешествия: даты, взрослые и возраст каждого ребёнка.</div>
+
+    <div class="chips">
+      <button class="chip active" data-type="all" onclick="setType('all',this)">Все варианты</button>
+      <button class="chip" data-type="Отель" onclick="setType('Отель',this)">Отели</button>
+      <button class="chip" data-type="Апартаменты" onclick="setType('Апартаменты',this)">Апартаменты</button>
+      <button class="chip" data-type="Квартира" onclick="setType('Квартира',this)">Квартиры</button>
+    </div>
+  </div>
+</section>
+
+<main class="content" id="results">
+  <div class="wrap layout">
+    <aside class="sidebar">
+      <h3>Фильтры</h3>
+
+      <div class="group">
+        <b>Цена за ночь</b>
+        <div class="range">
+          <input id="priceMin" type="number" placeholder="от 0 ₽">
+          <input id="priceMax" type="number" placeholder="до 10 000 ₽">
+        </div>
+      </div>
+
+      <div class="group">
+        <b>Тип жилья</b>
+        <label class="check"><input type="checkbox" value="Отель" onchange="applyFilters()"> Отель</label>
+        <label class="check"><input type="checkbox" value="Апартаменты" onchange="applyFilters()"> Апартаменты</label>
+        <label class="check"><input type="checkbox" value="Квартира" onchange="applyFilters()"> Квартира</label>
+      </div>
+
+      <div class="group">
+        <b>Удобства</b>
+        <label class="check"><input type="checkbox"> Wi-Fi</label>
+        <label class="check"><input type="checkbox"> Парковка</label>
+        <label class="check"><input type="checkbox"> Завтрак</label>
+      </div>
+
+      <div class="group">
+        <button class="action" style="width:100%" onclick="applyFilters()">Применить фильтры</button>
+      </div>
+    </aside>
+
+    <section class="main">
+      <div class="toolbar">
+        <div class="found" id="foundText">Найдено 3 варианта</div>
+        <div class="actions">
+          <select class="sort-select" id="sortBy" onchange="sortCards()">
+            <option value="relevance-desc">Популярные</option>
+            <option value="price-asc">Сначала дешевле</option>
+            <option value="price-desc">Сначала дороже</option>
+            <option value="rating-desc">Высокий рейтинг</option>
+          </select>
+          <button class="action map" onclick="showMap()">🗺 Показать на карте</button>
+        </div>
+      </div>
+
+      <article class="hotel" data-id="hotel1" data-type="Отель" data-city="Казань" data-price="6200" data-rating="4.9">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=85" alt="Отель">
+          <div class="badge">Отель</div>
+          <button class="heart" data-id="hotel1" onclick="toggleFavorite('hotel1',this)" aria-label="В избранное">♡</button>
+        </div>
+        <div class="info">
+          <div class="title">Отель в центре Казани</div>
+          <div class="rating">★ 4.9 · 218 отзывов</div>
+          <div class="meta">Казань · Вахитовский район · 8 минут пешком до Кремля</div>
+          <div class="features"><span class="feature">Wi-Fi</span><span class="feature">Завтрак</span><span class="feature">Парковка</span></div>
+        </div>
+        <div class="book">
+          <div class="old">7 100 ₽</div>
+          <div class="price">6 200 ₽</div>
+          <div class="night">за ночь</div>
+          <button class="partner" onclick="partnerDemo('Отель в центре Казани')">Посмотреть</button>
+        </div>
+      </article>
+
+      <article class="hotel" data-id="hotel2" data-type="Апартаменты" data-city="Казань" data-price="4500" data-rating="4.8">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=85" alt="Апартаменты">
+          <div class="badge">Апартаменты</div>
+          <button class="heart" data-id="hotel2" onclick="toggleFavorite('hotel2',this)" aria-label="В избранное">♡</button>
+        </div>
+        <div class="info">
+          <div class="title">Апартаменты у Кремля</div>
+          <div class="rating">★ 4.8 · 143 отзыва</div>
+          <div class="meta">Казань · центр · улица Баумана · до 4 гостей</div>
+          <div class="features"><span class="feature">Кухня</span><span class="feature">Wi-Fi</span><span class="feature">Кондиционер</span></div>
+        </div>
+        <div class="book">
+          <div class="price">4 500 ₽</div>
+          <div class="night">за ночь</div>
+          <button class="partner" onclick="partnerDemo('Апартаменты у Кремля')">Посмотреть</button>
+        </div>
+      </article>
+
+      <article class="hotel" data-id="hotel3" data-type="Квартира" data-city="Казань" data-price="3900" data-rating="4.7">
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1560185008-b033106af5c3?auto=format&fit=crop&w=900&q=85" alt="Квартира">
+          <div class="badge">Квартира</div>
+          <button class="heart" data-id="hotel3" onclick="toggleFavorite('hotel3',this)" aria-label="В избранное">♡</button>
+        </div>
+        <div class="info">
+          <div class="title">Семейная квартира рядом с центром</div>
+          <div class="rating">★ 4.7 · 91 отзыв</div>
+          <div class="meta">Казань · Вахитовский район · 2 комнаты · до 5 гостей</div>
+          <div class="features"><span class="feature">Кухня</span><span class="feature">Стиральная машина</span><span class="feature">Wi-Fi</span></div>
+        </div>
+        <div class="book">
+          <div class="price">3 900 ₽</div>
+          <div class="night">за ночь</div>
+          <button class="partner" onclick="partnerDemo('Семейная квартира рядом с центром')">Посмотреть</button>
+        </div>
+      </article>
+
+      <div class="empty" id="empty">
+        По выбранным условиям вариантов пока нет. Для демо-каталога сейчас добавлены объекты только в Казани.
+      </div>
+
+      <div class="note">
+        Кнопки «Посмотреть» уже открывают Яндекс Путешествия с выбранными датами и гостями. Сейчас переход тестовый, без affiliate_clid. После регистрации в Яндекс Дистрибуции вставим ваш ID, а после подключения API — точные landing_url объектов.
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 «Открой Казань». Демонстрационная версия каталога жилья.</div>
+</footer>
+
+<script>
+/* Параметры партнёрской интеграции.
+   affiliate_clid появится после регистрации площадки в Яндекс Дистрибуции.
+   Реальный landing_url отеля должен приходить из партнёрского API Яндекс Путешествий. */
+const YANDEX_AFFILIATE_CLID = ""; // сюда вставим ID после регистрации в Яндекс Дистрибуции
+const YANDEX_AFFILIATE_VID = "otkroy-kazan";
+
+let favorites = JSON.parse(localStorage.getItem('otkroyKazanFavorites') || '[]');
+let favoritesOnly = false;
+let selectedType = 'all';
+let adults = 2;
+let childAges = [];
+
+
+function toggleCityMenu(force){
+  const field = document.getElementById('cityField');
+  const pop = document.getElementById('cityPop');
+  if(force === false){
+    field.classList.remove('open');
+    pop.classList.remove('open');
+    return;
+  }
+  field.classList.toggle('open');
+  pop.classList.toggle('open');
+}
+
+function selectCity(city, el){
+  document.getElementById('city').value = city;
+  document.getElementById('cityLabel').textContent = city;
+  document.querySelectorAll('.city-option').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+  toggleCityMenu(false);
+  applyFilters();
+}
+
+function toggleMenu(force){
+  const m = document.getElementById('menu');
+  if(force === false){ m.classList.remove('open'); return; }
+  m.classList.toggle('open');
+}
+
+function toggleGuests(force){
+  const p = document.getElementById('guestPop');
+  if(force === false){ p.classList.remove('open'); return; }
+  p.classList.toggle('open');
+}
+
+document.addEventListener('click', function(e){
+  const menuWrap = document.querySelector('.menu-wrap');
+  if(menuWrap && !menuWrap.contains(e.target)) document.getElementById('menu').classList.remove('open');
+
+  const guestField = document.getElementById('guestField');
+  if(guestField && !guestField.contains(e.target)) document.getElementById('guestPop').classList.remove('open');
+
+  const cityField = document.getElementById('cityField');
+  if(cityField && !cityField.contains(e.target)) toggleCityMenu(false);
+});
+
+function changeAdults(delta){
+  adults = Math.max(1, Math.min(10, adults + delta));
+  renderGuests();
+}
+
+function changeChildren(delta){
+  const next = Math.max(0, Math.min(4, childAges.length + delta));
+  while(childAges.length < next) childAges.push(7);
+  while(childAges.length > next) childAges.pop();
+  renderGuests();
+}
+
+function setChildAge(index, value){
+  childAges[index] = Number(value);
+  updateGuestSummary();
+}
+
+function renderGuests(){
+  document.getElementById('adultCount').textContent = adults;
+  document.getElementById('childCount').textContent = childAges.length;
+  const holder = document.getElementById('childAges');
+  holder.innerHTML = '';
+  childAges.forEach((age, i)=>{
+    const row = document.createElement('div');
+    row.className = 'child-age';
+    row.innerHTML = `<span>Возраст ребёнка ${i+1}</span>
+      <select onchange="setChildAge(${i},this.value)">
+        ${Array.from({length:18},(_,n)=>`<option value="${n}" ${n===age?'selected':''}>${n} ${ageWord(n)}</option>`).join('')}
+      </select>`;
+    holder.appendChild(row);
+  });
+  updateGuestSummary();
+}
+
+function ageWord(n){
+  if(n===1) return 'год';
+  if(n>=2 && n<=4) return 'года';
+  return 'лет';
+}
+
+function updateGuestSummary(){
+  const aWord = adults===1 ? 'взрослый' : 'взрослых';
+  let txt = `${adults} ${aWord}`;
+  if(childAges.length){
+    const c = childAges.length;
+    const cWord = c===1 ? 'ребёнок' : (c>=2 && c<=4 ? 'ребёнка' : 'детей');
+    txt += `, ${c} ${cWord}`;
+  }
+  document.getElementById('guestSummary').textContent = txt;
+}
+
+function getSearchParams(){
+  return {
+    destination: document.getElementById('city').value,
+    checkin_date: document.getElementById('checkin').value,
+    checkout_date: document.getElementById('checkout').value,
+    adults,
+    children_ages: [...childAges],
+    order_by: document.getElementById('sortBy').value
+  };
+}
+
+function syncDates(){
+  const ci = document.getElementById('checkin');
+  const co = document.getElementById('checkout');
+  if(!ci.value) return;
+  const d = new Date(ci.value + 'T00:00:00');
+  d.setDate(d.getDate()+1);
+  const minCheckout = d.toISOString().slice(0,10);
+  co.min = minCheckout;
+  if(!co.value || co.value <= ci.value) co.value = minCheckout;
+}
+
+function validateSearch(){
+  const p = getSearchParams();
+  if(!p.checkin_date || !p.checkout_date){
+    alert('Выберите даты заезда и выезда.');
+    return false;
+  }
+  if(p.checkout_date <= p.checkin_date){
+    alert('Дата выезда должна быть позже даты заезда.');
+    return false;
+  }
+  return true;
+}
+
+function runSearch(){
+  if(!validateSearch()) return;
+  applyFilters();
+  sortCards();
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+function syncFavoritesUI(){
+  document.querySelectorAll('.heart').forEach(btn=>{
+    const active = favorites.includes(btn.dataset.id);
+    btn.classList.toggle('active', active);
+    btn.textContent = active ? '♥' : '♡';
+  });
+  document.getElementById('favCountTop').textContent = favorites.length;
+  document.getElementById('favCountMenu').textContent = favorites.length;
+}
+
+function toggleFavorite(id,btn){
+  if(favorites.includes(id)){
+    favorites = favorites.filter(x=>x!==id);
+  }else{
+    favorites.push(id);
+  }
+  localStorage.setItem('otkroyKazanFavorites', JSON.stringify(favorites));
+  syncFavoritesUI();
+  if(favoritesOnly) applyFilters();
+}
+
+function toggleFavorites(){
+  favoritesOnly = !favoritesOnly;
+  document.getElementById('favTop').style.background = favoritesOnly ? '#edf8f2' : '#fff';
+  document.getElementById('favTop').style.color = favoritesOnly ? 'var(--green)' : 'inherit';
+  applyFilters();
+}
+
+function setType(type,el){
+  selectedType = type;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters(){
+  const city = document.getElementById('city').value;
+  const min = parseInt(document.getElementById('priceMin').value || '0',10);
+  const max = parseInt(document.getElementById('priceMax').value || '999999',10);
+  const checkedTypes = [...document.querySelectorAll('.group input[type=checkbox]:checked')]
+    .map(x=>x.value).filter(Boolean);
+
+  let visible = 0;
+  document.querySelectorAll('.hotel').forEach(card=>{
+    const id = card.dataset.id;
+    const type = card.dataset.type;
+    const cardCity = card.dataset.city;
+    const price = parseInt(card.dataset.price,10);
+    const matchesCity = cardCity === city;
+    const matchesChip = selectedType === 'all' || type === selectedType;
+    const matchesChecks = checkedTypes.length===0 || checkedTypes.includes(type);
+    const matchesPrice = price >= min && price <= max;
+    const matchesFav = !favoritesOnly || favorites.includes(id);
+    const show = matchesCity && matchesChip && matchesChecks && matchesPrice && matchesFav;
+    card.classList.toggle('hidden', !show);
+    if(show) visible++;
+  });
+
+  document.getElementById('foundText').textContent =
+    favoritesOnly ? `В избранном: ${visible}` : `Найдено ${visible} ${visible===1?'вариант':(visible>=2&&visible<=4?'варианта':'вариантов')}`;
+  document.getElementById('empty').classList.toggle('show', visible===0);
+}
+
+function sortCards(){
+  const mode = document.getElementById('sortBy').value;
+  const main = document.querySelector('.main');
+  const cards = [...document.querySelectorAll('.hotel')];
+
+  cards.sort((a,b)=>{
+    if(mode==='price-asc') return Number(a.dataset.price)-Number(b.dataset.price);
+    if(mode==='price-desc') return Number(b.dataset.price)-Number(a.dataset.price);
+    if(mode==='rating-desc') return Number(b.dataset.rating)-Number(a.dataset.rating);
+    return 0;
+  });
+
+  const empty = document.getElementById('empty');
+  const note = document.querySelector('.note');
+  cards.forEach(c=>main.insertBefore(c, empty));
+  main.insertBefore(empty, note);
+}
+
+function showAllHotels(){
+  favoritesOnly = false;
+  selectedType = 'all';
+  document.querySelectorAll('.chip').forEach((c,i)=>c.classList.toggle('active',i===0));
+  applyFilters();
+}
+
+function partnerDemo(name){
+  if(!validateSearch()) return;
+
+  const p = getSearchParams();
+
+  // Пока без API ведём на поисковую/городскую страницу Яндекс Путешествий.
+  // Для Казани используем подтверждённую публичную страницу.
+  // Для остальных направлений временно открываем общий поиск; после API
+  // будем использовать точный landing_url/geo_id для каждого направления и объекта.
+  const cityBase = {
+    "Казань": "https://travel.yandex.ru/hotels/kazan/",
+    "Альметьевск": "https://travel.yandex.ru/hotels/almetyevsk/"
+  };
+
+  const base = cityBase[p.destination] || "https://travel.yandex.ru/hotels/";
+  const url = new URL(base);
+
+  // Параметры, которые использует интерфейс Яндекс Путешествий.
+  url.searchParams.set("adults", String(p.adults));
+  url.searchParams.set("checkinDate", p.checkin_date);
+  url.searchParams.set("checkoutDate", p.checkout_date);
+  url.searchParams.set("childrenAges", p.children_ages.join(","));
+  url.searchParams.set("roomCount", "1");
+
+  // Партнёрская разметка добавится автоматически, когда появится реальный affiliate_clid.
+  if (YANDEX_AFFILIATE_CLID) {
+    url.searchParams.set("affiliate_clid", YANDEX_AFFILIATE_CLID);
+    url.searchParams.set("affiliate_vid", YANDEX_AFFILIATE_VID);
+    url.searchParams.set("utm_source", "distribution");
+    url.searchParams.set("utm_medium", "cpa");
+  }
+
+  window.open(url.toString(), "_blank", "noopener");
+}
+
+function showMap(){
+  alert('Следующий этап: карта с метками жилья. Яндекс Путешествия также поддерживают выдачу на карте.');
+}
+
+function demoSection(name){
+  toggleMenu(false);
+  alert(`${name}: раздел добавлен в меню. Партнёрскую программу подключим позже.`);
+}
+
+renderGuests();
+syncDates();
+syncFavoritesUI();
+applyFilters();
+sortCards();
+</script>
+</body>
+</html>
